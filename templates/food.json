@@ -1,0 +1,164 @@
+{
+  "object": "experience",
+  "id": "52989ca67b3bd4e703000005",
+  "name": "Airboat tour of the Everglades",
+  "desc": "View fascinating wildlife and landscapes on this scenic airboat tour through Florida’s most unique ecosystem - The Everglades Park!\n\n- You see a variety of both native and exotic wildlife species\n- Hold a baby alligator!\n",
+  "currency": "USD",
+  "seller": {
+    "id": "4f104661536e86b23d000000"
+  },
+  "medias": [
+    {
+      "id": "52989d357b3bd4f30300000c",
+      "src": "http://sandbox1.xola.com/api/experiences/52989ca67b3bd4e703000005/medias/52989d357b3bd4f30300000c?size=medium",
+      "type": "photo",
+      "caption": null,
+      "seq": null,
+      "size": null,
+      "title": null
+    },
+    {
+      "id": "52989d817b3bd4e80300000a",
+      "src": "http://sandbox1.xola.com/api/experiences/52989ca67b3bd4e703000005/medias/52989d817b3bd4e80300000a?size=medium",
+      "type": "photo",
+      "caption": null,
+      "seq": null,
+      "size": null,
+      "title": null
+    }
+  ],
+  "photo": {
+    "id": "52989d357b3bd4f30300000c",
+    "src": "/uploads/images/experiences/52989ca67b3bd4e703000005/52989d357b3bd4f30300000c.jpg",
+    "type": "photo",
+    "caption": null,
+    "seq": null,
+    "size": null,
+    "title": null
+  },
+  "excerpt": "Tour the everglades in an Airboat!",
+  "guestType": "normal",
+  "group": {
+    "orderMin": 1,
+    "orderMax": 5,
+    "outingMin": 1,
+    "outingMinCutoff": 0,
+    "outingMax": 5
+  },
+  "paymentMethod": "cc",
+  "cancellationPolicy": "30 minutes before departure for a full refund",
+  "addOns": [],
+  "updated": "2017-05-24T07:23:57+00:00",
+  "sortDemographics": false,
+  "category": "Wildlife Safaris",
+  "duration": 60,
+  "eventDuration": null,
+  "complete": true,
+  "visible": true,
+  "requireAdult": false,
+  "earlyReturn": false,
+  "priceSchemes": [
+    {
+      "constraints": [
+        {
+          "object": "price_type_constraint",
+          "priceType": "person"
+        },
+        {
+          "object": "privacy_constraint",
+          "privacy": "public"
+        }
+      ],
+      "price": 19,
+      "priceType": "person",
+      "privacy": "public"
+    }
+  ],
+  "pickupAddress": "1006 N. U.S. Highway 27, Weston, Florida 33327",
+  "geo": {
+    "lat": 26.114104974528,
+    "lng": -80.34782409668
+  },
+  "pickupGeo": {
+    "lat": 26.11690953094,
+    "lng": -80.329370498657
+  },
+  "included": ["Ear Muffs"],
+  "notIncluded": ["Sense of adventure"],
+  "resources": [
+    {
+      "id": "55871a7dc683b1b00d8b4567",
+      "resource": {
+        "id": "55871a7dc683b1b00d8b4567",
+        "name": "Life jackets",
+        "seller": "4f104661536e86b23d000000",
+        "type": "equipment",
+        "capacity": 1,
+        "count": 10,
+        "schedules": []
+      },
+      "priority": null
+    }
+  ],
+  "demographics": [
+    {
+      "id": "54ae454ce5bdf063beb5d5de",
+      "object": "experience_demographic",
+      "createdAt": "2017-07-31T09:06:30+00:00",
+      "updatedAt": "2017-07-31T09:06:30+00:00",
+      "label": "Adults",
+      "labelCanonical": "adults",
+      "all": false,
+      "seller": {
+        "id": "4f104661536e86b23d000000"
+      },
+      "parent": {
+        "id": "597ef3136132ba4d6667552b"
+      },
+      "overrideCaption": true,
+      "experience": {
+        "id": "52989ca67b3bd4e703000005"
+      }
+    },
+    {
+      "id": "54ae454ce5bdf063beb5d5df",
+      "object": "experience_demographic",
+      "createdAt": "2017-07-31T09:06:30+00:00",
+      "updatedAt": "2017-07-31T09:06:30+00:00",
+      "label": "Children",
+      "labelCanonical": "child",
+      "caption": "5",
+      "all": false,
+      "seller": {
+        "id": "4f104661536e86b23d000000"
+      },
+      "parent": {
+        "id": "597ef3136132ba4d6667552c"
+      },
+      "overrideCaption": true,
+      "experience": {
+        "id": "52989ca67b3bd4e703000005"
+      },
+      "discount": {
+        "amount": 5,
+        "amountType": "absolute"
+      }
+    }
+  ],
+  "schedules": [
+    {
+      "id": "55921c5dc683b1fd1a8b4567",
+      "days": [0, 3, 4, 5, 6],
+      "repeat": "weekly",
+      "type": "available",
+      "departure": "fixed",
+      "times": [1000, 1300, 1500],
+      "priceDelta": 0
+    }
+  ],
+  "balanceDueOffset": 0,
+  "balanceDueReminder": false,
+  "price": 19,
+  "priceType": "person",
+  "private": false
+}
