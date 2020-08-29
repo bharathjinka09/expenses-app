@@ -13,7 +13,11 @@
 		  		<h4>Register</h4>
 		  	</div>
 
-	  		<form action="" method="post">
+	  		<form action="{% url 'register' %}" method="post">
+	  			{% csrf_token %}
+
+	  			{% include 'partials/_messages.html' %}
+
 	  			<div class="form-group">
 	  				<input class="form-control form-control-sm" type="text" id="usernameField" name="username" placeholder="Username">
 	  			</div>
@@ -45,6 +49,8 @@
   </div>
   <div class="col-md-4"></div>
 </div>
+<br>
+<br>
 
 <script src="{% static 'js/register.js' %}"></script>
 
