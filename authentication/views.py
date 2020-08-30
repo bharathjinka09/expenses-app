@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
 from django.contrib.auth.models import User
-from django.contrib import messages
+from django.contrib import messages,auth
 from validate_email import validate_email
 from django.core.mail import EmailMessage
 from django.urls import reverse
@@ -40,9 +40,7 @@ class UsernameValidationView(View):
 
         return JsonResponse({'username_valid': True})
 
-class LoginView(View):
-    def get(self, request):
-        return render(request, 'authentication/login.html')
+
 
 class RegistrationView(View):
     def get(self, request):
@@ -131,3 +129,25 @@ class VerificationView(View):
 
 
         return redirect('login')
+
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'authentication/login.html')
+
+    def post(self,request):
+        username = request.POST['username']
+        password = request.POST['password']
+
+        if username and password:
+
+            user = auth.authenticate(username=username,password=password)
+
+            if user:
+                if user.is_active:
+                    auth.login(request,user)
+                    messages.success(request,f'Welcome {user.username}. You are logged in!')
+                messages.error(request,'Account is not active. Please check your email!')
+                return render(request,'authentication/login.html')
+            messages.error(request,'Invalid credentials. Please try agaim!')
+            return render(request,'authentication/login.html')
