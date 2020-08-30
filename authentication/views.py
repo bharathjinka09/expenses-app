@@ -1,12 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-import json
 from validate_email import validate_email
 from django.core.mail import EmailMessage
+from django.urls import reverse
 from secret_file import sender_email, sender_password
+from .utils import account_activation_token
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
+from django.contrib.sites.shortcuts import get_current_site
+import json
 
 class EmailValidationView(View):
     def post(self, request):
@@ -35,6 +40,9 @@ class UsernameValidationView(View):
 
         return JsonResponse({'username_valid': True})
 
+class LoginView(View):
+    def get(self, request):
+        return render(request, 'authentication/login.html')
 
 class RegistrationView(View):
     def get(self, request):
@@ -73,9 +81,18 @@ class RegistrationView(View):
 
                 # link = reverse('activate', kwargs={
                 #                'uidb64': email_body['uid'], 'token': email_body['token']})
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+                domain = get_current_site(request).domain
+                link=reverse('activate', kwargs={
+                        'uidb64':uidb64, 'token':account_activation_token.make_token(user)
+                    })
 
+                activate_url = 'http://'+domain+link
+
+                
+                email_body = f"Hi {user.username}. Please click this link to verify your account!\n {activate_url}"
+                
                 email_subject = 'Activate your account'
-                email_body = 'test'
 
                 # activate_url = 'http://'+current_site.domain+link
 
@@ -90,3 +107,7 @@ class RegistrationView(View):
                 return render(request, 'authentication/register.html')
 
         return render(request, 'authentication/register.html')
+
+class VerificationView(View):
+    def get(self,request,uidb64,token):
+        return redirect('login')
