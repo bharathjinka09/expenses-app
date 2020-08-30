@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 import json
 from validate_email import validate_email
-# Create your views here.
-
+from django.core.mail import EmailMessage
+from secret_file import sender_email, sender_password
 
 class EmailValidationView(View):
     def post(self, request):
@@ -38,13 +38,55 @@ class UsernameValidationView(View):
 
 class RegistrationView(View):
     def get(self, request):
-        return render(request, "authentication/register.html")
+        return render(request, 'authentication/register.html')
 
     def post(self, request):
+        # GET USER DATA
+        # VALIDATE
+        # create a user account
 
-        messages.success(request, 'Registered Successfully! success')
-        messages.warning(request, 'Registered Successfully! warning')
-        messages.info(request, 'Registered Successfully! info')
-        messages.error(request, 'Registered Successfully! error')
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
 
-        return render(request, "authentication/register.html")
+        context = {
+            'fieldValues': request.POST
+        }
+
+        if not User.objects.filter(username=username).exists():
+            if not User.objects.filter(email=email).exists():
+                if len(password) < 6:
+                    messages.error(request, 'Password too short')
+                    return render(request, 'authentication/register.html', context)
+
+                user = User.objects.create_user(username=username, email=email)
+                user.set_password(password)
+                user.is_active = False
+                user.save()
+                # current_site = get_current_site(request)
+                # email_body = {
+                #     'user': user,
+                #     'domain': current_site.domain,
+                #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                #     'token': account_activation_token.make_token(user),
+                # }
+
+                # link = reverse('activate', kwargs={
+                #                'uidb64': email_body['uid'], 'token': email_body['token']})
+
+                email_subject = 'Activate your account'
+                email_body = 'test'
+
+                # activate_url = 'http://'+current_site.domain+link
+
+                email = EmailMessage(
+                    email_subject,
+                    email_body,
+                    sender_email,
+                    [email],
+                )
+                email.send(fail_silently=False)
+                messages.success(request, 'Account successfully created')
+                return render(request, 'authentication/register.html')
+
+        return render(request, 'authentication/register.html')

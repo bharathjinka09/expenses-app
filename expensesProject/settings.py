@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 from django.contrib import messages
 import os
+from secret_file import sender_email, sender_password
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -132,3 +133,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = sender_email
+DEFAULT_FROM_EMAIL = sender_email
+EMAIL_HOST_PASSWORD = sender_password
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
