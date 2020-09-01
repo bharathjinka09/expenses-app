@@ -68,8 +68,8 @@
 
   <input class="btn btn-info" type="submit" name="submit" value="Grab Data" />
 </form>
-<br>
-<br>
+<br />
+<br />
 
 <table class="table table-dark">
   {% if title_data %}
@@ -79,17 +79,24 @@
     <th>Article</th>
     <th>Author</th>
     <th>Page No</th>
-    {% comment %} <th>Abstract</th>
-    <th>Keyword</th> {% endcomment %}
+    {% comment %}
+    <th>Abstract</th>
+    <th>Keyword</th>
+    {% endcomment %}
   </tr>
+  {% for article_element in article_elements %}
   <tr>
     <td>{{title_data}}</td>
-    <td>{{article_data}}</td>
+
+    <td>{{article_element}}</td>
     <td>{{author_data}}</td>
     <td>{{page_data}}</td>
-    {% comment %} <td>Series/............</td>
-    <td>harry,potter</td> {% endcomment %}
+    {% comment %}
+    <td>Series/............</td>
+    <td>harry,potter</td>
+    {% endcomment %}
   </tr>
+  {% endfor %}
   {% endif %}
 </table>
 

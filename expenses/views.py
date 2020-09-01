@@ -33,15 +33,14 @@ def grab_data(request):
         title_element = soup.find("h3")
         title_data = title_element.text
 
-        article_element = soup.find(class_="tocTitle")
-        article_data = article_element.text
+        article_elements = soup.find_all(class_="tocTitle")
+        article_elements_list = []
 
-        # data = soup.findAll("div", attrs={"class": "tocTitle"})
-        # for div in data:
-        #     links = div.findAll("a")
-        #     for a in links:
-        #         global article_link
-        #         article_link = a["href"]
+        for article_element in article_elements:
+            print(article_element.text)
+            article_elements_list.append(article_element.text)
+        article_data = article_element.text
+        article_link = article_element.href
 
         author_element = soup.find(class_="tocAuthors")
         author_data = author_element.text
@@ -51,10 +50,9 @@ def grab_data(request):
 
         context = {
             "title_data": title_data,
-            "article_data": article_data,
+            "article_elements": article_elements_list,
             "author_data": author_data,
             "page_data": page_data,
-            # "article_link": article_link,
         }
         return render(request, "expenses/grab_data.html", context)
 
