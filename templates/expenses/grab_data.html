@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+	
+<h1>Enter URL to grab data</h1>
+<form method="post">
+	{% csrf_token %}
+	<input width="25px" type="text" name="url" class="form-control" placeholder="Enter URL" />
+	<br>
+	<!-- http://journals.foundationspeak.com/index.php/ijmss/issue/view/87/showToc -->
+	<input width="25px" type="text" name="title" class="form-control" placeholder="Title Table Name" />
+	<br>
+	
+	<input width="25px" type="text" name="article" class="form-control" placeholder="Article Table Name" />
+	<br>
+	
+	<input width="25px" type="text" name="author" class="form-control" placeholder="Author Table Name" />
+	<br>
+	
+	<input width="25px" type="text" name="pageno" class="form-control" placeholder="Page no Table Name"/>
+	<br>
+	
+	<input width="25px" type="text" name="abstract" class="form-control" placeholder="Abstract" />
+	<br>
+	
+	<input width="25px" type="text" name="keyword" class="form-control" placeholder="Keyword Table Name"/>
+	<br>
+	
+	<input class="btn btn-info" type="submit" name="submit" value="Grab Data">
+
+</form>
+{% endblock %}

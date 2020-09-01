@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Expenses {% block title %}
+    <title>General Grabber {% block title %}
     {% endblock %} </title>
 
     <!-- Bootstrap core CSS -->
@@ -16,11 +16,12 @@
   </head>
   <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Expenses Tracker</a>
+  <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="/">Web Crawling</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+  <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+  <a href="/grab-data" class="btn btn-primary">Grab Data</a>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <form action="{% url 'logout' %}" method="post">
@@ -34,8 +35,8 @@
 
 <div class="container-fluid">
   <div class="row">
-    {% include 'partials/_sidebar.html' %}
-
+    <!--{% include 'partials/_sidebar.html' %}
+-->
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         {% block content %}
         {% endblock %}
