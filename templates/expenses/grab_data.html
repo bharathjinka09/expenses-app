@@ -84,20 +84,19 @@
     <th>Keyword</th>
     {% endcomment %}
   </tr>
-  {% for article_element in article_elements %}
+  {% for final_list in final_lists %}
   <tr>
     <td>{{title_data}}</td>
 
-    <td>{{article_element}}</td>
-    <td>{{author_data}}</td>
-    <td>{{page_data}}</td>
+    <td>{{final_list.articles}}</td>
+    <td>{{final_list.authors}}</td>
+    <td>{{final_list.pages}}</td>
     {% comment %}
     <td>Series/............</td>
     <td>harry,potter</td>
     {% endcomment %}
   </tr>
-  {% endfor %}
-  {% endif %}
+  {% endfor %} {% endif %}
 </table>
 
-{% endblock %}
+{% for detail in details %} {{detail.articles}} {% endfor %} {% endblock %}

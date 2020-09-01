@@ -33,27 +33,31 @@ def grab_data(request):
         title_element = soup.find("h3")
         title_data = title_element.text
 
+        final_lists = []
+
         article_elements = soup.find_all(class_="tocTitle")
-        article_elements_list = []
 
         for article_element in article_elements:
             print(article_element.text)
-            article_elements_list.append(article_element.text)
-        article_data = article_element.text
-        article_link = article_element.href
+            final_lists.append({"articles": article_element.text})
 
-        author_element = soup.find(class_="tocAuthors")
-        author_data = author_element.text
+        author_elements = soup.find_all(class_="tocAuthors")
 
-        page_element = soup.find(class_="tocPages")
-        page_data = page_element.text
+        for author_element in author_elements:
+            print(author_element.text)
+            final_lists.append({"authors": author_element.text})
+
+        page_elements = soup.find_all(class_="tocPages")
+
+        for page_element in page_elements:
+            print(page_element.text)
+            final_lists.append({"pages": page_element.text})
 
         context = {
             "title_data": title_data,
-            "article_elements": article_elements_list,
-            "author_data": author_data,
-            "page_data": page_data,
+            "final_lists": final_lists,
         }
+        print(final_lists)
         return render(request, "expenses/grab_data.html", context)
 
     except Exception as e:
