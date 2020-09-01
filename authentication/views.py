@@ -13,8 +13,17 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.contrib.sites.shortcuts import get_current_site
 import json
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+import threading
 
 
+class EmailThread(threading.Thread):
+
+    def __init__(self, email_message):
+        self.email_message=email_message
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email_message.send()
 
 class EmailValidationView(View):
     def post(self, request):
@@ -92,7 +101,9 @@ class RegistrationView(View):
                     sender_email,
                     [email],
                 )
-                email.send(fail_silently=False)
+                # email.send(fail_silently=False)
+                EmailThread(email_message).start()
+
                 messages.success(request, 'Account successfully created')
                 return render(request, 'authentication/register.html')
 
@@ -175,6 +186,7 @@ class RequestResetEmailView(View):
         if user.exists():
             uidb64 = urlsafe_base64_encode(force_bytes(user[0].pk))
             current_site = get_current_site(request).domain
+            print(user,'user')
 
             link = reverse('request-reset-email', kwargs={
                 'uidb64': uidb64, 'token': PasswordResetTokenGenerator.make_token(user)
@@ -184,17 +196,18 @@ class RequestResetEmailView(View):
 
             email_subject = 'Reset your password'
 
-            email_body = f"Hi {user.username}. Please click this link to reset your password!\n {activate_url}"
+            email_body = f"Hi. Please click this link to reset your password!\n {activate_url}"
 
             # activate_url = 'http://'+current_site.domain+link
 
-            email = EmailMessage(
+            email_message = EmailMessage(
                 email_subject,
                 email_body,
                 sender_email,
                 [email],
             )
-            email.send(fail_silently=False)
+            
+            EmailThread(email_message).start()
 
         messages.success(
             request, 'We have sent you an email with instructions on resetting your password')
