@@ -95,7 +95,7 @@ class RegistrationView(View):
 
                 # activate_url = 'http://'+current_site.domain+link
 
-                email = EmailMessage(
+                email_message = EmailMessage(
                     email_subject,
                     email_body,
                     sender_email,
@@ -104,7 +104,7 @@ class RegistrationView(View):
                 # email.send(fail_silently=False)
                 EmailThread(email_message).start()
 
-                messages.success(request, 'Account successfully created')
+                messages.success(request, 'Account successfully created. Please check your email and activate account!')
                 return render(request, 'authentication/register.html')
 
         return render(request, 'authentication/register.html')
