@@ -87,7 +87,7 @@ class RegistrationView(View):
                     'uidb64': uidb64, 'token': account_activation_token.make_token(user)
                 })
 
-                activate_url = 'http://' + current_site + link
+                activate_url = current_site + link
 
                 email_body = f"Hi {user.username}. Please click this link to verify your account!\n {activate_url}"
 
