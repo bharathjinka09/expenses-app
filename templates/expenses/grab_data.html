@@ -11,7 +11,7 @@
     placeholder="Enter URL"
   />
   <br />
-  <!-- http://journals.foundationspeak.com/index.php/ijmss/issue/view/87/showToc -->
+
   <input
     width="25px"
     type="text"
@@ -79,10 +79,6 @@
     <th>Article</th>
     <th>Author</th>
     <th>Page No</th>
-    {% comment %}
-    <th>Abstract</th>
-    <th>Keyword</th>
-    {% endcomment %}
   </tr>
   {% for final_list in final_lists %}
   <tr>
@@ -94,10 +90,6 @@
     </td>
     <td>{{final_list.authors}}</td>
     <td>{{final_list.pages}}</td>
-    {% comment %}
-    <td>Series/............</td>
-    <td>harry,potter</td>
-    {% endcomment %}
   </tr>
   {% endfor %} {% endif %}
 </table>

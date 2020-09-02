@@ -7,3 +7,5 @@ urlpatterns = [
     path("grab-data", views.grab_data, name="grab-data"),
     path("detail-data/<str:title>", views.detail_data, name="detail-data"),
 ]
+
+# GetArticleInformation(TOCurl, ArticleTableName, TitleTableName, AuthorTableName, PageNoTableName, AbstractTableName, KeywordTableName, DOITableName)
