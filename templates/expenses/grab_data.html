@@ -87,8 +87,11 @@
   {% for final_list in final_lists %}
   <tr>
     <td>{{title_data}}</td>
-
-    <td>{{final_list.articles}}</td>
+    <td>
+      <a href="detail-data/{{final_list.articles}}" target="__blank"
+        >{{final_list.articles}}</a
+      >
+    </td>
     <td>{{final_list.authors}}</td>
     <td>{{final_list.pages}}</td>
     {% comment %}
