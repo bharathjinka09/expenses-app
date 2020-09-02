@@ -26,32 +26,36 @@ def grab_data(request):
 	pageno = request.POST.get("pageno", "")
 	abstract = request.POST.get("abstract", "")
 	keyword = request.POST.get("keyword", "")
-	# print(url, title, article, author, pageno, abstract, keyword)
+	print(url, title, article, author, pageno, abstract, keyword)
 
 	try:
 		r = requests.get(url)
 		soup = BeautifulSoup(r.content, "html.parser")
 
-		title_element = soup.find("h3")
+		# title_element = soup.find("h3")
+		title_element = soup.find(title)
 		title_data = title_element.text
 
 		final_lists = []
 		# [{'articles':[]},{'authors':[]}]
-		article_elements = soup.find_all(class_="tocTitle")
+		# article_elements = soup.find_all(class_="tocTitle")
+		article_elements = soup.find_all(class_=article)
 
 		for article_element in article_elements:
 			# print(article_element.text)
 			final_lists.append({"articles": article_element.text})
 			# Book.objects.create(article=article_element.text)
 
-		author_elements = soup.find_all(class_="tocAuthors")
+		# author_elements = soup.find_all(class_="tocAuthors")
+		author_elements = soup.find_all(class_=author)
 
 		for author_element in author_elements:
 			# print(author_element.text)
 			final_lists.append({"authors": author_element.text.strip()})
 			# Book.objects.create(author=author_element.text)
 
-		page_elements = soup.find_all(class_="tocPages")
+		# page_elements = soup.find_all(class_="tocPages")
+		page_elements = soup.find_all(class_=pageno)
 
 		for page_element in page_elements:
 			# print(page_element.text)
