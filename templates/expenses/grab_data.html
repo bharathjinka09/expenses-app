@@ -86,6 +86,7 @@
     <th>Article</th>
     <th>Author</th>
     <th>Page No</th>
+    <th>Links</th>
   </tr>
   {% for final_list in final_lists %}
   <tr>
@@ -97,8 +98,22 @@
     </td>
     <td>{{final_list.authors}}</td>
     <td>{{final_list.pages}}</td>
+    <td>{{final_list.links}}</td>
   </tr>
   {% endfor %} {% endif %}
 </table>
 
-{% for detail in details %} {{detail.articles}} {% endfor %} {% endblock %}
+{% for detail in details %} {{detail.articles}} {% endfor %} 
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
