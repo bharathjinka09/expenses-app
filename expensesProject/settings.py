@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'expenses',
     'django.contrib.sites',
+    'djide',
 ]
 
 SITE_ID = 1

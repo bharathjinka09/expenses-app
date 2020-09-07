@@ -15,8 +15,10 @@ def index(request):
 def add_expense(request):
     return render(request, "expenses/add_expense.html")
 
+
 # //*[@id="content"]/table[1]/tbody/tr[1]/td[1]/a
 # //*[@id="content"]/table[2]/tbody/tr[1]/td[1]/a
+
 
 @login_required(login_url="/authentication/login")
 def grab_data(request):
@@ -28,55 +30,33 @@ def grab_data(request):
     pageno = request.POST.get("pageno", "")
     abstract = request.POST.get("abstract", "")
     keyword = request.POST.get("keyword", "")
-    print(url, title, article, author, pageno, abstract, keyword)
+    # print(url, title, article, author, pageno, abstract, keyword)
 
     try:
         r = requests.get(url)
         soup = BeautifulSoup(r.content, "html.parser")
 
-        # title_element = soup.find("h3")
-        title_element = soup.find(title)
-        title_data = title_element.text
-
-        final_lists = []
-        # [{'articles':[]},{'authors':[]}]
-        # article_elements = soup.find_all(class_="tocTitle")
-        article_elements = soup.find_all(class_=article)
-
-        for article_element in article_elements:
-            # print(article_element.text)
-            final_lists.append({"articles": article_element.text})
-            
-            links = article_element.a['href']
-            final_lists.append({"links":links})
-            
-            # Book.objects.create(article=article_element.text)
-
-        # author_elements = soup.find_all(class_="tocAuthors")
-        author_elements = soup.find_all(class_=author)
-
-        for author_element in author_elements:
-            # print(author_element.text)
-            final_lists.append({"authors": author_element.text.strip()})
-            # Book.objects.create(author=author_element.text)
-
-        # page_elements = soup.find_all(class_="tocPages")
-        page_elements = soup.find_all(class_=pageno)
-
-        for page_element in page_elements:
-            # print(page_element.text)
-            final_lists.append({"pages": page_element.text.strip()})
-            # Book.objects.create(page_no=page_element.text)
+        title_data = soup.find(id="articleTitle")
+        title = title_data.text
+        
+        author_data = soup.find(id="authorString")
+        author = author_data.text
+        
+        title_data = soup.find(id="articleTitle")
+        title = title_data.text
+        
+        title_data = soup.find(id="articleTitle")
+        title = title_data.text
 
         context = {
-            "title_data": title_data,
-            "final_lists": final_lists,
-            "links": links,
-        }
+            "title": title,
+            "author":author,
+            }
         # pprint(final_lists)
         return render(request, "expenses/grab_data.html", context)
 
     except Exception as e:
+        print("Error")
         print(e)
         return render(request, "expenses/grab_data.html")
 
@@ -117,7 +97,7 @@ def detail_data(request, title):
         return render(request, "expenses/detail_data.html")
 
 
-import requests
+import requests, json
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -129,156 +109,162 @@ from pprint import pprint
 # Grabber Tool
 
 
-# @login_required(login_url="/authentication/login")
-# def GetArticleInformation(request):
-# 	try:
-# 		hn = []
-# 		ArticleInfo = {}
-# 		# res = requests.get('http://journals.foundationspeak.com/index.php/ijmss/issue/view/87/showToc')
-# 		try:
-# 			url = request.POST.get("url", "")
-# 		except Exception as e:
-# 			pass
+@login_required(login_url="/authentication/login")
+def GetArticleInformation(request):
+    try:
+        hn = []
+        ArticleInfo = {}
+        # url = requests.get('http://journals.foundationspeak.com/index.php/ijmss/issue/view/87/showToc')
+        # url ='http://journals.foundationspeak.com/index.php/ijmss/issue/view/87/showToc'
+        try:
+            url = request.POST.get("url")
+            res = requests.get(url)
 
-# 		res = requests.get(url)
-# 		return render(request, "expenses/grab_data.html", context)
+        except Exception as e:
+            pass
 
-# 	except HTTPError as e:
-# 		print(e)
-# 	except URLError:
-# 		print("Server down or incorrect domain")
-# 	else:
-# 		# soup = BeautifulSoup(res.text, 'html.parser')
-# 		soup = BeautifulSoup(res.text, "html5lib")
+        return render(request, "expenses/grab_data.html")
 
-# 		# Journal Title
-# 		journaltitle = soup.title
-# 		journaltitlename = ((journaltitle.getText()).replace("\n", "")).replace(
-# 			"\t", ""
-# 		)
-# 		hn.append({"JournalTitle": journaltitlename})
+    except HTTPError as e:
+        print(e)
+    except URLError:
+        print("Server down or incorrect domain")
+    else:
+        # soup = BeautifulSoup(res.text, 'html.parser')
+        soup = BeautifulSoup(res.text, "html5lib")
 
-# 		title = request.POST.get("title", "")
-# 		article = request.POST.get("article", "")
-# 		author = request.POST.get("author", "")
-# 		pageno = request.POST.get("pageno", "")
-# 		abstract = request.POST.get("abstract", "")
-# 		keyword = request.POST.get("keyword", "")
+        # Journal Title
+        journaltitle = soup.title
+        journaltitlename = ((journaltitle.getText()).replace("\n", "")).replace(
+            "\t", ""
+        )
+        hn.append({"JournalTitle": journaltitlename})
 
-# 		# GetArticleInformation(TOCurl, ArticleTableName, TitleTableName, AuthorTableName, PageNoTableName, AbstractTableName, KeywordTableName, DOITableName)
+        url = request.POST.get("url")
+        title = request.POST.get("title", "")
+        article = request.POST.get("article", "")
+        author = request.POST.get("author", "")
+        pageno = request.POST.get("pageno", "")
+        abstract = request.POST.get("abstract", "")
+        keyword = request.POST.get("keyword", "")
 
-# 		# GetArticleInformation(
-# 		#     "https://journals.scholarpublishing.org/index.php/TMLAI/issue/view/287",
-# 		#     "obj_article_summary",
-# 		#     "title",
-# 		#     "authors",
-# 		#     "pages",
-# 		#     "item abstract",
-# 		#     "item keywords",
-# 		#     "item doi",
-# 		# )
+        # GetArticleInformation(TOCurl, ArticleTableName, TitleTableName, AuthorTableName, PageNoTableName, AbstractTableName, KeywordTableName, DOITableName)
 
-# 		# Article Title
-# 		# title = soup.select('.' + ArticleTableName)
-# 		# Author = soup.select('.' + AuthorTableName)
-# 		# Authortags = soup.findAll("td", {"class": "tocAuthors"})
-# 		Authortags = soup.findAll("div", {"class": AuthorTableName})
-# 		title = soup.findAll("div", {"class": TitleTableName})
-# 		PageNoData = soup.findAll("div", {"class": PageNoTableName})
-# 		# urlTags = soup.findAll("a", {"class": TitleTableName})
-# 		# urlTags = soup.findAll("a", {"class": TitleTableName})
+        # GetArticleInformation(
+        #     "https://journals.scholarpublishing.org/index.php/TMLAI/issue/view/287",
+        #     "obj_article_summary",
+        #     "title",
+        #     "authors",
+        #     "pages",
+        #     "item abstract",
+        #     "item keywords",
+        #     "item doi",
+        # )
 
-# 		for idx, item in enumerate(title):
-# 			for one_a_tag in title[idx].findAll("a"):  # 'a' tags are for links
-# 				href = one_a_tag["href"]
-# 				# print(idx)
-# 			# titleName = replace(title[idx].getText(),'\n', '')
-# 			# titleName = ((title[idx].getText()).replace('\n', '').replace('\t',''))
-# 			# href = ((urlTags[idx].getText().replace('\n', '').replace('\t', '')))
-# 			# href = item.get('href', None)
-# 			titleName = title[idx].getText().replace("\n", "").replace("\t", "")
-# 			try:
-# 				AuthorName = (
-# 					Authortags[idx].getText().replace("\n", "").replace("\t", "")
-# 				)
-# 			except Exception as e:
-# 				pass
+        # Article Title
+        # title = soup.select('.' + ArticleTableName)
+        # Author = soup.select('.' + AuthorTableName)
+        # Authortags = soup.findAll("td", {"class": "tocAuthors"})
+        Authortags = soup.findAll("div", {"class": AuthorTableName})
+        title = soup.findAll("div", {"class": TitleTableName})
+        PageNoData = soup.findAll("div", {"class": PageNoTableName})
+        # urlTags = soup.findAll("a", {"class": TitleTableName})
+        # urlTags = soup.findAll("a", {"class": TitleTableName})
 
-# 			try:
-# 				PageNo = PageNoData[idx].getText().replace("\n", "").replace("\t", "")
-# 			except Exception as e:
-# 				pass
-# 			# AuthorName = ((PageNoData[idx].getText()).replace('\n', '').replace('\t', ''))
+        for idx, item in enumerate(title):
+            for one_a_tag in title[idx].findAll("a"):  # 'a' tags are for links
+                href = one_a_tag["href"]
+                # print(idx)
+            # titleName = replace(title[idx].getText(),'\n', '')
+            # titleName = ((title[idx].getText()).replace('\n', '').replace('\t',''))
+            # href = ((urlTags[idx].getText().replace('\n', '').replace('\t', '')))
+            # href = item.get('href', None)
+            titleName = title[idx].getText().replace("\n", "").replace("\t", "")
+            try:
+                AuthorName = (
+                    Authortags[idx].getText().replace("\n", "").replace("\t", "")
+                )
+            except Exception as e:
+                pass
 
-# 			res_2 = requests.get(href)
-# 			soup_details = BeautifulSoup(res_2.text, "html5lib")
-# 			AbstractDescription = soup_details("div", {"class": AbstractTableName})
-# 			# DOIName1 = ""
-# 			# if DOITableName != "":
-# 			#     DOI = soup_details("div", {"class": DOITableName})
-# 			#     # print(DOI)
-# 			#     DOIName = re.findall(r'<a href="https://doi.org/.*', str(DOI))
-# 			#     # print('DOIName')
-# 			#     # print(DOIName)
-# 			#     for DOI1 in DOIName:
-# 			#         DOIName1 = DOI1.replace('<a href="https://doi.org/', "").replace(
-# 			#             '">', ""
-# 			#         )
-# 			# print(DOIName1)
+            try:
+                PageNo = PageNoData[idx].getText().replace("\n", "").replace("\t", "")
+            except Exception as e:
+                pass
+            # AuthorName = ((PageNoData[idx].getText()).replace('\n', '').replace('\t', ''))
 
-# 			# Dummy To test
-# 			# print('Soupdetails')
-# 			# print(soup_details)
-# 			# print(AbstractTableName)
-# 			# print('Abstract')
-# 			# print(AbstractDescription)
+            res_2 = requests.get(href)
+            soup_details = BeautifulSoup(res_2.text, "html5lib")
+            AbstractDescription = soup_details("div", {"class": AbstractTableName})
+            # DOIName1 = ""
+            # if DOITableName != "":
+            #     DOI = soup_details("div", {"class": DOITableName})
+            #     # print(DOI)
+            #     DOIName = re.findall(r'<a href="https://doi.org/.*', str(DOI))
+            #     # print('DOIName')
+            #     # print(DOIName)
+            #     for DOI1 in DOIName:
+            #         DOIName1 = DOI1.replace('<a href="https://doi.org/', "").replace(
+            #             '">', ""
+            #         )
+            # print(DOIName1)
 
-# 			Abstract = (
-# 				(str(AbstractDescription[0].text).replace("Abstract", "", 1))
-# 				.replace("\n", "")
-# 				.replace("\t", "")
-# 			)
-# 			Keyword = soup_details("div", {"class": KeywordTableName})
-# 			KeywordDescription = (
-# 				(str(Keyword[0].text).replace("Keywords", "", 1))
-# 				.replace("\n", "")
-# 				.replace("\t", "")
-# 			)
+            # Dummy To test
+            # print('Soupdetails')
+            # print(soup_details)
+            # print(AbstractTableName)
+            # print('Abstract')
+            # print(AbstractDescription)
 
-# 			# Regular Expression
-# 			# patteren = re.compile(r'<div><p><em>([a-zA-z0-9]*)+(<br />)')
-# 			# patteren = re.compile(r'([a-zA-z0-9]*)')
-# 			# x = patteren.findall(str(AbstractDescription[0].text))
-# 			# print(str(AbstractDescription[0].text))
+            Abstract = (
+                (str(AbstractDescription[0].text).replace("Abstract", "", 1))
+                .replace("\n", "")
+                .replace("\t", "")
+            )
+            Keyword = soup_details("div", {"class": KeywordTableName})
+            KeywordDescription = (
+                (str(Keyword[0].text).replace("Keywords", "", 1))
+                .replace("\n", "")
+                .replace("\t", "")
+            )
 
-# 			hn.append(
-# 				{
-# 					"Articletitle": titleName,
-# 					# "DOI": DOIName1,
-# 					"Page": PageNo,
-# 					"link": href,
-# 					"Author": AuthorName,
-# 					"Abstract": Abstract,
-# 					"Keywords": KeywordDescription,
-# 				}
-# 			)
+            # Regular Expression
+            # patteren = re.compile(r'<div><p><em>([a-zA-z0-9]*)+(<br />)')
+            # patteren = re.compile(r'([a-zA-z0-9]*)')
+            # x = patteren.findall(str(AbstractDescription[0].text))
+            # print(str(AbstractDescription[0].text))
 
-# 		pprint(hn)
-# 		context = {
-# 			"articles": hn,
-# 		}
-# 		# GetArticleInformation(
-# 		#     "https://journals.scholarpublishing.org/index.php/TMLAI/issue/view/287",
-# 		#     "obj_article_summary",
-# 		#     "title",
-# 		#     "authors",
-# 		#     "pages",
-# 		#     "item abstract",
-# 		#     "item keywords",
-# 		#     "item doi",
-# 		# )
+            hn.append(
+                {
+                    "Articletitle": titleName,
+                    # "DOI": DOIName1,
+                    "Page": PageNo,
+                    "link": href,
+                    "Author": AuthorName,
+                    "Abstract": Abstract,
+                    "Keywords": KeywordDescription,
+                }
+            )
 
-# 		return render(request, "expenses/grab_data.html", context)
+        pprint(hn)
+        context = {
+            "articles": hn,
+        }
+        data = GetArticleInformation(
+            "https://journals.scholarpublishing.org/index.php/TMLAI/issue/view/287",
+            "obj_article_summary",
+            "title",
+            "authors",
+            "pages",
+            "item abstract",
+            "item keywords",
+            "item doi",
+        )
+        print(data)
+
+        return render(request, "expenses/grab_data.html", context)
+
+
 # return JsonResponse(hn, safe=False)
 
 # print(hn[2])

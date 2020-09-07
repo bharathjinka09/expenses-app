@@ -9,7 +9,6 @@
     name="url"
     class="form-control"
     placeholder="Enter URL"
-    required
   />
   <br />
 
@@ -19,7 +18,6 @@
     name="title"
     class="form-control"
     placeholder="Title Table Name"
-    required
   />
   <br />
 
@@ -29,7 +27,6 @@
     name="article"
     class="form-control"
     placeholder="Article Table Name"
-    required
   />
   <br />
 
@@ -39,7 +36,6 @@
     name="author"
     class="form-control"
     placeholder="Author Table Name"
-    required
   />
   <br />
 
@@ -49,7 +45,6 @@
     name="pageno"
     class="form-control"
     placeholder="Page no Table Name"
-    required
   />
   <br />
 
@@ -59,7 +54,6 @@
     name="abstract"
     class="form-control"
     placeholder="Abstract"
-    required
   />
   <br />
 
@@ -69,7 +63,6 @@
     name="keyword"
     class="form-control"
     placeholder="Keyword Table Name"
-    required
   />
   <br />
 
@@ -78,6 +71,7 @@
 <br />
 <br />
 
+{% comment %}
 <table class="table table-dark table-responsive">
   {% if title_data %}
 
@@ -102,18 +96,13 @@
   </tr>
   {% endfor %} {% endif %}
 </table>
+{% endcomment %}
 
-{% for detail in details %} {{detail.articles}} {% endfor %} 
-
-
-
-
-
-
-
-
-
-
-
-
+<div class="card">
+  <div class="card-body">
+    <strong>Title :</strong> {{title}}
+    <br />
+    <strong>Author :</strong> {{author}}
+  </div>
+</div>
 {% endblock %}
